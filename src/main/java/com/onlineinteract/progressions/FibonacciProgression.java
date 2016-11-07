@@ -1,4 +1,4 @@
-package onlineinteract.com.progressions;
+package com.onlineinteract.progressions;
 
 /**
  * Created by Digilogue on 07/11/2016.

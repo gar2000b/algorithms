@@ -1,4 +1,4 @@
-package onlineinteract.com.progressions;
+package com.onlineinteract.progressions;
 
 import org.junit.Before;
 import org.junit.Test;
