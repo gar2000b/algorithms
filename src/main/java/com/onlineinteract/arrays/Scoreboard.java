@@ -84,6 +84,18 @@ public class Scoreboard {
         return temp;                               // return the removed object
     }
 
+    public GameEntry remove2(int index) {
+        GameEntry temp = board[index];
+
+        for (int i = index; i < numEntries - 1; i++) {
+            board[i] = board[i + 1];
+        }
+
+        board[numEntries - 1] = null;
+        numEntries--;
+        return temp;
+    }
+
     /**
      * Returns a string representation of the high scores list.
      */
@@ -107,7 +119,7 @@ public class Scoreboard {
         for (int i = 0; i < names.length; i++) {
             GameEntry gE = new GameEntry(names[i], scores[i]);
             System.out.println("Adding " + gE);
-            highscores.add2(gE);
+            highscores.add(gE);
             System.out.println(" Scoreboard: " + highscores);
         }
         System.out.println("Removing score at index " + 3);
