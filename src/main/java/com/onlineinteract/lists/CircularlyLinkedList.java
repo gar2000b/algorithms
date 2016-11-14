@@ -3,7 +3,7 @@ package com.onlineinteract.lists;
 /**
  * Created by Digilogue on 11/11/2016.
  */
-public class SinglyLinkedList<E> {
+public class CircularlyLinkedList<E> {
 
     // Nested node class
     private static class Node<E> {
@@ -28,11 +28,10 @@ public class SinglyLinkedList<E> {
         }
     }
 
-    private Node<E> head = null;
     private Node<E> tail = null;
     private int size = 0;
 
-    public SinglyLinkedList() {
+    public CircularlyLinkedList() {
     }
 
     public int size() {
@@ -46,7 +45,7 @@ public class SinglyLinkedList<E> {
     public E first() {
         if (isEmpty())
             return null;
-        return head.getElement();
+        return tail.getNext().getElement();
     }
 
     public E last() {
@@ -55,66 +54,83 @@ public class SinglyLinkedList<E> {
         return tail.getElement();
     }
 
+    public void rotate() {
+        tail = tail.getNext();
+    }
+
     public void addFirst(E e) {
-        head = new Node<>(e, head);
-        if (size == 0)
-            tail = head;
+
+        if (size == 0) {
+            tail = new Node<>(e, null);
+            tail.setNext(tail);
+        } else {
+            Node<E> n = new Node<>(e, tail.getNext());
+            tail.setNext(n);
+        }
         size++;
     }
 
     public void addLast(E e) {
-        Node<E> newest = new Node<>(e, null);
-        if (isEmpty()) {
-            head = newest;
-            tail = newest;
-        } else {
-            tail.setNext(newest);
-            tail = newest;
-        }
-        size++;
+        addFirst(e);
+        tail = tail.getNext();
     }
 
     public E removeFirst() {
         if (isEmpty()) return null;
-        E answer = head.getElement();
-        head = head.getNext();
-        size--;
-        if (size == 0)
+        E answer = tail.getNext().getElement();
+        if (tail.getNext() != tail) {
+            tail.setNext(tail.getNext().getNext());
+        } else {
             tail = null;
+        }
+        size--;
         return answer;
     }
 
     public static void main(String[] args) {
-        SinglyLinkedList<String> singlyLinkedList = new SinglyLinkedList<>();
-        singlyLinkedList.addFirst("A");
-        singlyLinkedList.addFirst("B");
-        singlyLinkedList.addFirst("C");
-        singlyLinkedList.addFirst("D");
+        CircularlyLinkedList<String> circularlyLinkedList = new CircularlyLinkedList<>();
+        circularlyLinkedList.addFirst("A");
+        circularlyLinkedList.addFirst("B");
+        circularlyLinkedList.addFirst("C");
+        circularlyLinkedList.addFirst("D");
 
-        Node<String> n = singlyLinkedList.head;
+        Node<String> n = circularlyLinkedList.tail.getNext();
+        System.out.println("getNext() called: ");
         System.out.println(n.getElement());
-        for (int i = 0; i < singlyLinkedList.size() - 1; i++) {
+        System.out.println("loop around remaining items in list: ");
+        for (int i = 0; i < circularlyLinkedList.size() - 1; i++) {
+            n = n.getNext();
+            System.out.println(n.getElement());
+        }
+        System.out.println("loop end.");
+
+        circularlyLinkedList.addLast("E");
+        System.out.println();
+        System.out.println(circularlyLinkedList.tail.getElement());
+
+        System.out.println();
+        circularlyLinkedList.removeFirst();
+
+        n = circularlyLinkedList.tail.getNext();
+        System.out.println(n.getElement());
+        for (int i = 0; i < circularlyLinkedList.size() - 1; i++) {
             n = n.getNext();
             System.out.println(n.getElement());
         }
 
-        singlyLinkedList.addLast("E");
         System.out.println();
-        System.out.println(singlyLinkedList.tail.getElement());
-
+        System.out.println("first: " + circularlyLinkedList.first());
+        System.out.println("last: " + circularlyLinkedList.last());
         System.out.println();
-        singlyLinkedList.removeFirst();
 
-        n = singlyLinkedList.head;
+        circularlyLinkedList.rotate();
+
+        n = circularlyLinkedList.tail.getNext();
         System.out.println(n.getElement());
-        for (int i = 0; i < singlyLinkedList.size() - 1; i++) {
+        for (int i = 0; i < circularlyLinkedList.size() - 1; i++) {
             n = n.getNext();
             System.out.println(n.getElement());
         }
-
-        System.out.println();
-        System.out.println("first: " + singlyLinkedList.first());
-        System.out.println("last: " + singlyLinkedList.last());
     }
 
 }

@@ -84,6 +84,21 @@ public class SinglyLinkedList<E> {
         return answer;
     }
 
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (getClass() != o.getClass()) return false;
+        SinglyLinkedList other = (SinglyLinkedList) o; // use nonparameterized type
+        if (size != other.size) return false;
+        Node walkA = head; // traverse the primary list
+        Node walkB = other.head; // traverse the secondary list
+        while (walkA != null) {
+            if (!walkA.getElement().equals(walkB.getElement())) return false; //mismatch
+            walkA = walkA.getNext();
+            walkB = walkB.getNext();
+        }
+        return true; // if we reach this, everything matched successfully
+    }
+
     public static void main(String[] args) {
         SinglyLinkedList<String> singlyLinkedList = new SinglyLinkedList<>();
         singlyLinkedList.addFirst("A");
@@ -115,6 +130,24 @@ public class SinglyLinkedList<E> {
         System.out.println();
         System.out.println("first: " + singlyLinkedList.first());
         System.out.println("last: " + singlyLinkedList.last());
+
+        SinglyLinkedList<String> singlyLinkedList2 = new SinglyLinkedList<>();
+        singlyLinkedList2.addFirst("E");
+        singlyLinkedList2.addFirst("A");
+        singlyLinkedList2.addFirst("B");
+        singlyLinkedList2.addFirst("C");
+
+        System.out.println();
+        System.out.println("first: " + singlyLinkedList2.first());
+        System.out.println("last: " + singlyLinkedList2.last());
+
+        System.out.println();
+
+        if (singlyLinkedList.equals(singlyLinkedList2)) {
+            System.out.println("* Both Singly Linked Lists are equal to each other");
+        } else {
+            System.out.println("* Both Singly Linked Lists are NOT equal to each other");
+        }
     }
 
 }
