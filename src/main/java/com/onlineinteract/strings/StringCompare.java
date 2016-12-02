@@ -8,7 +8,7 @@ public class StringCompare {
 	public static void main(String[] args) {
 
 		System.out.println("Result is: " + ("aaaa".compareTo("aaa")));
-		System.out.println("Result is: " + strcmp("aaaa", "aaa"));
+		System.out.println("Result is: " + strcmp("h", "a"));
 	}
 
 	/**
@@ -30,13 +30,11 @@ public class StringCompare {
 			return string1.charAt(0);
 
 		for (int i = 0; i < string1.length(); i++) {
-			if (i == string2.length() - 1) {
+			if (i == string2.length()) {
 				return string1.length() - string2.length();
 			}
 
-			if (string1.charAt(i) == string2.charAt(i))
-				i++;
-			else
+			if (string1.charAt(i) != string2.charAt(i))
 				return string1.charAt(i) - string2.charAt(i);
 		}
 
