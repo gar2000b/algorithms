@@ -8,7 +8,7 @@ public class StringCompare {
 	public static void main(String[] args) {
 
 		System.out.println("Result is: " + ("aaaa".compareTo("aaa")));
-		System.out.println("Result is: " + strcmp("aaaa","aaa"));
+		System.out.println("Result is: " + strcmp("aaaa", "aaa"));
 	}
 
 	/**
@@ -19,6 +19,15 @@ public class StringCompare {
 	 * @return int lexicographical value < 0, == 0 or > 0
 	 */
 	protected static int strcmp(String string1, String string2) {
+
+		if (string1 == null && string2 == null)
+			return 0;
+
+		if (string1 == null)
+			return 0 - string2.charAt(0);
+
+		if (string2 == null)
+			return string1.charAt(0);
 
 		for (int i = 0; i < string1.length(); i++) {
 			if (i == string2.length() - 1) {

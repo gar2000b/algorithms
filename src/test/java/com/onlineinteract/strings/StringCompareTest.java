@@ -24,4 +24,22 @@ public class StringCompareTest {
 		assertEquals(0, result);
 	}
 
+	@Test
+	public void shouldReturnEquals0IfBothEntriesAreNull() {
+		int result = StringCompare.strcmp(null, null);
+		assertEquals(0, result);
+	}
+	
+	@Test
+	public void shouldReturnGreaterThan0IfSecondEntryIsNull() {
+		int result = StringCompare.strcmp("aaaa", null);
+		assertEquals(97, result);
+	}
+	
+	@Test
+	public void shouldReturnLessThan0IfFirstEntryIsNull() {
+		int result = StringCompare.strcmp(null, "aaaa");
+		assertEquals(-97, result);
+	}
+	
 }
