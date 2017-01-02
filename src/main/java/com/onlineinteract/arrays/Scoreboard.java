@@ -21,16 +21,24 @@ public class Scoreboard {
     public void add(GameEntry e) {
         int newScore = e.getScore();
         // is the new entry e really a high score?
+        // If the number of entries is less thn the board length or the new scrore is
+        // greater than the lowest score (at end of array) then proceed to add new score.
         if (numEntries < board.length || newScore > board[numEntries - 1].getScore()) {
+        	// If the number of entries is less than the board length then we
+        	// increment the number of entries by one.
             if (numEntries < board.length)        // no score drops from the board
                 numEntries++;                       // so overall number increases
             // shift any lower scores rightward to make room for the new entry
             int j = numEntries - 1;
+            // while j > 0 and last entries score is less than the new score then 
+            // shift entry to the right. Else break out of while.
             while (j > 0 && board[j - 1].getScore() < newScore) {
                 board[j] = board[j - 1];              // shift entry from j-1 to j
                 j--;                                // and decrement j
             }
-            board[j] = e;                         // when done, add new entry
+            
+            // when done, add new entry at position j.
+            board[j] = e;
         }
     }
 
