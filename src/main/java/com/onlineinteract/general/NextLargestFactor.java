@@ -1,8 +1,8 @@
 package com.onlineinteract.general;
 
 /**
- * This algorithm seeks out the Next Largest Factor of a number. In other words, it
- * seeks out the Largest Divisor / the largest numbers that divide the input
+ * This algorithm seeks out the Next Largest Factor of a number. In other words,
+ * it seeks out the Largest Divisor / the largest numbers that divide the input
  * number exactly (no remainders) *excluding the input number* itself unless
  * there are no others that divide equally. So 6 would be 2 x 3 with the largest
  * being 3. 11 would be 1 x 11 with the largest being 11 as no other number in
