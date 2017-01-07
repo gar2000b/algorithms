@@ -5,10 +5,10 @@ public class EnglishRuler {
 	public static void main(String[] args) {
 		drawRuler(4, 3);
 	}
-	
+
 	/**
 	 * Draws an English ruler for the given number of inches and major
-	 * tick length.
+	 * tick length. Estimated Time Complexity: O(nlog n).
 	 */
 	public static void drawRuler(int nInches, int majorLength) {
 		// draw inch 0 line and label
