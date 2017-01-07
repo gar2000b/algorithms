@@ -12,7 +12,7 @@ package com.onlineinteract.recursion;
 public class Factorial {
 
 	public static void main(String[] args) {
-		System.out.println(fact(-3));
+		System.out.println(fact(3));
 	}
 	
 	public static int fact(int n) {
