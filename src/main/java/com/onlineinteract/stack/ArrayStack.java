@@ -28,6 +28,7 @@ public class ArrayStack<E> implements Stack<E> {
 	}
 
 	// Constructs stack with given capacity
+	@SuppressWarnings("unchecked")
 	public ArrayStack(int capacity) {
 		// safe cast - compiler may give warning
 		data = (E[]) new Object[capacity];
