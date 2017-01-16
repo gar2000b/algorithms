@@ -1,9 +1,14 @@
 package com.onlineinteract.lists;
 
+import com.onlineinteract.queue.api.Deque;
+
 /**
+ * Implementing the Deque interface effectively also makes this
+ * act like as a Double Ended Queue data structure.
+ * 
  * Created by Digilogue on 14/11/2016.
  */
-public class DoublyLinkedList<E> {
+public class DoublyLinkedList<E> implements Deque<E> {
 
 	// Nested node class
 	private static class Node<E> {
@@ -61,13 +66,15 @@ public class DoublyLinkedList<E> {
 	public E first() {
 		if (isEmpty())
 			return null;
-		return header.getNext().getElement(); // first element is beyond header
+		return header.getNext().getElement(); // first element is
+												// beyond header
 	}
 
 	public E last() {
 		if (isEmpty())
 			return null;
-		return trailer.getPrev().getElement(); // last element is before trailer
+		return trailer.getPrev().getElement(); // last element is
+												// before trailer
 	}
 
 	// public update methods
@@ -76,14 +83,16 @@ public class DoublyLinkedList<E> {
 	 * Adds element e to the front of the list.
 	 */
 	public void addFirst(E e) {
-		addBetween(e, header, header.getNext()); // place just after the header
+		addBetween(e, header, header.getNext()); // place just after
+													// the header
 	}
 
 	/**
 	 * Adds element e to the end of the list.
 	 */
 	public void addLast(E e) {
-		addBetween(e, trailer.getPrev(), trailer); // place just before the
+		addBetween(e, trailer.getPrev(), trailer); // place just
+													// before the
 													// trailer
 	}
 
@@ -93,7 +102,8 @@ public class DoublyLinkedList<E> {
 	public E removeFirst() {
 		if (isEmpty())
 			return null; // nothing to remove
-		return remove(header.getNext()); // first element is beyond header
+		return remove(header.getNext()); // first element is beyond
+											// header
 	}
 
 	/**
@@ -102,7 +112,8 @@ public class DoublyLinkedList<E> {
 	public E removeLast() {
 		if (isEmpty())
 			return null; // nothing to remove
-		return remove(trailer.getPrev()); // last element is before trailer
+		return remove(trailer.getPrev()); // last element is before
+											// trailer
 	}
 	// private update methods
 
@@ -178,12 +189,12 @@ public class DoublyLinkedList<E> {
 		while ((next = next.getNext()) != null) {
 			System.out.println(next.getElement());
 		}
-		
+
 		// remove first and last nodes
 		System.out.println("\n* remove first and last nodes");
 		doublyLinkedList.removeFirst();
 		doublyLinkedList.removeLast();
-		
+
 		// print all items
 		System.out.println("\n* print all items");
 		next = doublyLinkedList.getHeader();
