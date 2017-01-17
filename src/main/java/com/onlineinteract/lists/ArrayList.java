@@ -1,5 +1,9 @@
 package com.onlineinteract.lists;
 
+import java.nio.channels.IllegalSelectorException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import com.onlineinteract.lists.api.List;
 
 /**
@@ -9,12 +13,39 @@ import com.onlineinteract.lists.api.List;
  *
  * @param <E>
  */
-public class ArrayList<E> implements List<E> {
+public class ArrayList<E> implements List<E>, Iterable<E> {
 
 	// Instance variables
 	public static final int CAPACITY = 16;
 	private E[] data;
 	private int size = 0;
+
+	private class ArrayIterator implements Iterator<E> {
+
+		private int j = 0;
+		private boolean removable = false;
+
+		@Override
+		public boolean hasNext() {
+			return j < size;
+		}
+
+		@Override
+		public E next() {
+			if (j == size)
+				throw new NoSuchElementException("o next element");
+			removable = true;
+			return data[j++];
+		}
+
+		public void remove() throws IllegalStateException {
+			if (!removable)
+				throw new IllegalStateException("Nothing to remove");
+			ArrayList.this.remove(j - 1);
+			j--;
+			removable = false;
+		}
+	}
 
 	// Constructors
 	public ArrayList() {
@@ -106,8 +137,14 @@ public class ArrayList<E> implements List<E> {
 			throw new IndexOutOfBoundsException("Illegal index: " + i);
 	}
 
+	@Override
+	public Iterator<E> iterator() {
+		return new ArrayIterator();
+	}
+
 	/**
 	 * Testing simple Bounded ArrayList data structure.
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -116,18 +153,33 @@ public class ArrayList<E> implements List<E> {
 		al.add(0, 2);
 		al.add(0, 3);
 		al.add(0, 4);
-		
+
 		for (int i = 0; i < al.size; i++) {
 			System.out.println(al.get(i));
 		}
-		
+
 		al.remove(1);
 		al.remove(0);
 		System.out.println();
-		
+
 		for (int i = 0; i < al.size; i++) {
 			System.out.println(al.get(i));
 		}
-		
+
+		al.add(0, 9);
+		al.add(0, 8);
+		al.add(0, 7);
+		System.out.println();
+
+		/**
+		 * We can now use the for-each construct to iterate over the
+		 * ArrayList collection as it now implements the Iterable
+		 * interface and contains a private Iterator implementation.
+		 */
+		for (Integer value : al) {
+			System.out.print(value + " ");
+		}
+
 	}
+
 }

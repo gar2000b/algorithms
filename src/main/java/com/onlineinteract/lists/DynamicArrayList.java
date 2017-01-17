@@ -1,5 +1,8 @@
 package com.onlineinteract.lists;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import com.onlineinteract.lists.api.List;
 
 /**
@@ -9,12 +12,39 @@ import com.onlineinteract.lists.api.List;
  *
  * @param <E>
  */
-public class DynamicArrayList<E> implements List<E> {
+public class DynamicArrayList<E> implements List<E>, Iterable<E> {
 
 	// Instance variables
 	public static final int CAPACITY = 5;
 	private E[] data;
 	private int size = 0;
+	
+	private class ArrayIterator implements Iterator<E> {
+
+		private int j = 0;
+		private boolean removable = false;
+
+		@Override
+		public boolean hasNext() {
+			return j < size;
+		}
+
+		@Override
+		public E next() {
+			if (j == size)
+				throw new NoSuchElementException("o next element");
+			removable = true;
+			return data[j++];
+		}
+
+		public void remove() throws IllegalStateException {
+			if (!removable)
+				throw new IllegalStateException("Nothing to remove");
+			DynamicArrayList.this.remove(j - 1);
+			j--;
+			removable = false;
+		}
+	}
 
 	// Constructors
 	public DynamicArrayList() {
@@ -122,6 +152,11 @@ public class DynamicArrayList<E> implements List<E> {
 		return data.length;
 	}
 
+	@Override
+	public Iterator<E> iterator() {
+		return new ArrayIterator();
+	}
+	
 	/**
 	 * Testing simple Bounded ArrayList data structure.
 	 * 
@@ -154,4 +189,5 @@ public class DynamicArrayList<E> implements List<E> {
 		System.out.println("\nInner Array Length is: " + al.getInnerArrayLength());
 
 	}
+
 }
