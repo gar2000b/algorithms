@@ -3,26 +3,26 @@ package com.onlineinteract.lists;
 import com.onlineinteract.lists.api.List;
 
 /**
- * A simple bounded ArrayList.
+ * An unbounded ArrayList something akin to java.util.ArrayList.
  * 
  * @author Gary Black / Digilogue
  *
  * @param <E>
  */
-public class ArrayList<E> implements List<E> {
+public class DynamicArrayList<E> implements List<E> {
 
 	// Instance variables
-	public static final int CAPACITY = 16;
+	public static final int CAPACITY = 5;
 	private E[] data;
 	private int size = 0;
 
 	// Constructors
-	public ArrayList() {
+	public DynamicArrayList() {
 		this(CAPACITY);
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList(int capacity) {
+	public DynamicArrayList(int capacity) {
 		data = (E[]) new Object[capacity];
 	}
 
@@ -71,8 +71,9 @@ public class ArrayList<E> implements List<E> {
 	@Override
 	public void add(int i, E e) throws IndexOutOfBoundsException {
 		checkIndex(i, size + 1);
+		// Double the capacity if capacity is reached.
 		if (size == data.length)
-			throw new IllegalStateException("Array is full");
+			resize(2 * data.length);
 		// Start by shifting rightmost
 		for (int j = size; j > i; j--)
 			data[j] = data[j - 1];
@@ -99,6 +100,17 @@ public class ArrayList<E> implements List<E> {
 		return temp;
 	}
 
+	/** Resizes internal array to have given capacity >= size. */
+	@SuppressWarnings("unchecked")
+	protected void resize(int capacity) {
+		// safe cast; compiler, may give warning.
+		E[] temp = (E[]) new Object[capacity];
+		for (int k = 0; k < size; k++)
+			temp[k] = data[k];
+		// start using the new array
+		data = temp;
+	}
+
 	// utility method
 	/** Checks whether the given index is in the range [0, n−1]. */
 	protected void checkIndex(int i, int n) throws IndexOutOfBoundsException {
@@ -106,28 +118,40 @@ public class ArrayList<E> implements List<E> {
 			throw new IndexOutOfBoundsException("Illegal index: " + i);
 	}
 
+	public int getInnerArrayLength() {
+		return data.length;
+	}
+
 	/**
 	 * Testing simple Bounded ArrayList data structure.
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		ArrayList<Integer> al = new ArrayList<>();
+		DynamicArrayList<Integer> al = new DynamicArrayList<>();
 		al.add(0, 1);
 		al.add(0, 2);
 		al.add(0, 3);
 		al.add(0, 4);
-		
+		al.add(0, 5);
+
 		for (int i = 0; i < al.size; i++) {
 			System.out.println(al.get(i));
 		}
-		
-		al.remove(1);
-		al.remove(0);
-		System.out.println();
-		
-		for (int i = 0; i < al.size; i++) {
-			System.out.println(al.get(i));
-		}
-		
+
+		System.out.println("\nInner Array Length is: " + al.getInnerArrayLength());
+
+		al.add(0, 4);
+		al.add(0, 5);
+
+		System.out.println("\nInner Array Length is: " + al.getInnerArrayLength());
+
+		al.add(0, 6);
+		al.add(0, 7);
+		al.add(0, 8);
+		al.add(0, 9);
+
+		System.out.println("\nInner Array Length is: " + al.getInnerArrayLength());
+
 	}
 }
