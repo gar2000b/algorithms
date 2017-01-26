@@ -1,6 +1,5 @@
 package com.onlineinteract.lists;
 
-import java.nio.channels.IllegalSelectorException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
