@@ -15,7 +15,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 		// an element stored at this node
 		private E element;
 		// a reference to the parent node (if any)
-		private Node<E> parent; 
+		private Node<E> parent;
 		// a reference to the left child (if any)
 		private Node<E> left;
 		// a reference to the right child (if any)
@@ -28,7 +28,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 			left = leftChild;
 			right = rightChild;
 		}
-		
+
 		// accessor methods
 
 		public E getElement() {
@@ -76,9 +76,15 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	// constructor
 	public LinkedBinaryTree() {
 	} // constructs an empty binary tree
-	// nonpublic utility
+		// nonpublic utility
 
-	/** Validates the position and returns it as a node. */
+	/**
+	 * Validates the position and returns it as a node. Invalid
+	 * conditions are: if it is not an instance of Node or if the Node
+	 * being passed in is equal to the same instance as its parent
+	 * (therefore a defunct node).
+	 * 
+	 */
 	protected Node<E> validate(Position<E> p) throws IllegalArgumentException {
 		if (!(p instanceof Node))
 			throw new IllegalArgumentException("Not valid position type");
@@ -131,7 +137,8 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	// update methods supported by this class
 	/**
 	 * Places element e at the root of an empty tree and returns its
-	 * new Position.
+	 * new Position. If the tree already contains nodes, throw
+	 * exceptions, else create the root node with element passed in.
 	 */
 	public Position<E> addRoot(E e) throws IllegalStateException {
 		if (!isEmpty())
@@ -205,7 +212,11 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
 	/**
 	 * Removes the node at Position p and replaces it with its child,
-	 * if any.
+	 * if any. From looking at this, we cannot remove nodes from the
+	 * middle of the tree - more specifically, if it has two children.
+	 * If it had once child, it would move up into its place. If it
+	 * had no children, then of course the node to be removed would
+	 * simply just disappear.
 	 */
 	public E remove(Position<E> p) throws IllegalArgumentException {
 		Node<E> node = validate(p);
@@ -244,10 +255,99 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public static void main(String[] args) {
 		System.out.println("Linked Binary Tree Demo");
 		System.out.println("-----------------------");
 		System.out.println();
+
+		LinkedBinaryTree<Character> lbt = new LinkedBinaryTree<>();
+		Position<Character> rootNode = lbt.addRoot('-');
+		Position<Character> level1Pos1 = lbt.addLeft(rootNode, '/');
+		Position<Character> level1Pos2 = lbt.addRight(rootNode, '+');
+
+		Position<Character> level2Pos1 = lbt.addLeft(level1Pos1, '*');
+		Position<Character> level2Pos2 = lbt.addRight(level1Pos1, '+');
+
+		Position<Character> level2Pos3 = lbt.addLeft(level1Pos2, '*');
+		Position<Character> level2Pos4 = lbt.addRight(level1Pos2, '6');
+
+		Position<Character> level3Pos1 = lbt.addLeft(level2Pos1, '+');
+		Position<Character> level3Pos2 = lbt.addRight(level2Pos1, '3');
+
+		Position<Character> level3Pos3 = lbt.addLeft(level2Pos2, '-');
+		Position<Character> level3Pos4 = lbt.addRight(level2Pos2, '2');
+
+		Position<Character> level3Pos5 = lbt.addLeft(level2Pos3, '3');
+		Position<Character> level3Pos6 = lbt.addRight(level2Pos3, '-');
+
+		Position<Character> level4Pos1 = lbt.addLeft(level3Pos1, '3');
+		Position<Character> level4Pos2 = lbt.addRight(level3Pos1, '1');
+
+		Position<Character> level4Pos3 = lbt.addLeft(level3Pos3, '9');
+		Position<Character> level4Pos4 = lbt.addRight(level3Pos3, '5');
+
+		Position<Character> level4Pos5 = lbt.addLeft(level3Pos6, '7');
+		Position<Character> level4Pos6 = lbt.addRight(level3Pos6, '4');
+
+		Iterable<Position<Character>> children = lbt.children(level2Pos1);
+
+		for (Position<Character> position : children) {
+			System.out.print(" | " + position.getElement());
+		}
+		System.out.print(" |\n");
+
+		// Try to remove a node with two children (should throw
+		// exception)
+		try {
+			lbt.remove(level2Pos3);
+		} catch (Exception e) {
+			System.out.println("Exception: " + e.getMessage());
+		}
+
+		// Remove a leaf node
+		lbt.remove(level4Pos5);
+
+		// Prove removal
+		children = lbt.children(level3Pos6);
+
+		for (Position<Character> position : children) {
+			System.out.print(" | " + position.getElement());
+		}
+		System.out.print(" |\n");
+
+		// Remove parent same parent node to see if remaining child
+		// (4) replaces it.
+		
+		lbt.remove(level3Pos6);
+		
+		// Prove the new parent has no children now
+		children = lbt.children(level4Pos6);
+
+		for (Position<Character> position : children) {
+			System.out.print(" | " + position.getElement());
+		}
+		System.out.print(" |\n");
+		
+		//Prove it's new parent contains it (4) now.
+		children = lbt.children(level2Pos3);
+
+		for (Position<Character> position : children) {
+			System.out.print(" | " + position.getElement());
+		}
+		System.out.print(" |\n");
+		
+		/**
+		 * Output should be:
+		 * 
+		 * Linked Binary Tree Demo
+		 * -----------------------
+		 * | + | 3 |
+		 * Exception: p has two children
+		 * | 4 |
+		 * |
+		 * | 3 | 4 |
+		 */
+
 	}
 } // ----------- end of LinkedBinaryTree class -----------
