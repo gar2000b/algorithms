@@ -5,18 +5,22 @@ package com.onlineinteract.tree.api;
  * interface.
  */
 public abstract class AbstractTree<E> implements Tree<E> {
+	// O(1)
 	public boolean isInternal(Position<E> p) {
 		return numChildren(p) > 0;
 	}
 
+	// O(1)
 	public boolean isExternal(Position<E> p) {
 		return numChildren(p) == 0;
 	}
 
+	// O(1)
 	public boolean isRoot(Position<E> p) {
 		return p == root();
 	}
 
+	// O(1)
 	public boolean isEmpty() {
 		return size() == 0;
 	}
@@ -29,7 +33,8 @@ public abstract class AbstractTree<E> implements Tree<E> {
 	 * 
 	 * The base case is detected when isRoot(p) is true, thereby
 	 * returning 0. For each return thereafter, 1 will be added for
-	 * each depth level until the initial recursive call is made.
+	 * each depth level until the initial recursive call is made. 
+	 * O(dp + 1)
 	 * 
 	 */
 	public int depth(Position<E> p) {

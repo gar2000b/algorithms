@@ -1,13 +1,19 @@
 package com.onlineinteract.lists;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import com.onlineinteract.lists.api.Position;
 import com.onlineinteract.lists.api.PositionalList;
 
 /**
- * Implementation of a positional list stored as a doubly linked list.
- * All the methods are of Time Complexity = O(1).
+ * CDT (Concrete Data Type) Implementation of a positional list stored
+ * as a doubly linked list. Note: it isn't actually implementing a DLL
+ * using composition / adapter pattern, rather it's embedding the DLL
+ * functionality straight into this class. All the methods are of Time
+ * Complexity = O(1).
  */
-public class LinkedPositionalList<E> implements PositionalList<E> {
+public class LinkedPositionalList<E> implements PositionalList<E>, Iterable<E> {
 
 	/**
 	 * Nested Node Class
@@ -54,6 +60,80 @@ public class LinkedPositionalList<E> implements PositionalList<E> {
 			next = n;
 		}
 	} // ----------- end of nested Node class -----------
+
+	// ---------------- nested PositionIterator class ----------------
+	private class PositionIterator implements Iterator<Position<E>> {
+		private Position<E> cursor = first(); // position of the next
+												// element to report
+		private Position<E> recent = null; // position of last
+											// reported element
+
+		/** Tests whether the iterator has a next object. */
+		public boolean hasNext() {
+			return (cursor != null);
+		}
+
+		/** Returns the next position in the iterator. */
+		public Position<E> next() throws NoSuchElementException {
+			if (cursor == null)
+				throw new NoSuchElementException("nothing left");
+			recent = cursor; // element at this position might later
+								// be removed
+			cursor = after(cursor);
+			return recent;
+		}
+
+		/**
+		 * Removes the element returned by most recent call to next.
+		 */
+		public void remove() throws IllegalStateException {
+			if (recent == null)
+				throw new IllegalStateException("nothing to remove");
+			LinkedPositionalList.this.remove(recent); // remove from
+														// outer list
+			recent = null; // do not allow remove again until next is
+							// called
+		}
+	} // ------------ end of nested PositionIterator class
+
+	// ---------------- nested PositionIterable class ----------------
+	private class PositionIterable implements Iterable<Position<E>> {
+		public Iterator<Position<E>> iterator() {
+			return new PositionIterator();
+		}
+	} // ------------ end of nested PositionIterable class
+
+	/** Returns an iterable representation of the list's positions. */
+	public Iterable<Position<E>> positions() {
+		// create a new instance of the inner class
+		return new PositionIterable();
+	}
+
+	// ---------------- nested ElementIterator class ----------------
+	/*
+	 * This class adapts the iteration produced by positions() to
+	 * return elements.
+	 */
+	private class ElementIterator implements Iterator<E> {
+		Iterator<Position<E>> posIterator = new PositionIterator();
+
+		public boolean hasNext() {
+			return posIterator.hasNext();
+		}
+
+		public E next() {
+			return posIterator.next().getElement();
+		} // return element!
+
+		public void remove() {
+			posIterator.remove();
+		}
+	}
+
+	@Override
+	public Iterator<E> iterator() {
+		return new ElementIterator();
+	}
 
 	// instance variables of the LinkedPositionalList
 	private Node<E> header; // header sentinel
@@ -245,11 +325,26 @@ public class LinkedPositionalList<E> implements PositionalList<E> {
 
 		lpl.remove(forRemoval); // removes 4
 		System.out.println("");
+		System.out.println("");
 
 		cursorPosition = lpl.first();
 		while (cursorPosition != null) {
 			System.out.print(cursorPosition.getElement() + " ");
 			cursorPosition = lpl.after(cursorPosition);
+		}
+
+		// Now that we have added Iteration Functionality, traverse
+		// over List.
+		System.out.println("");
+		for (Integer value : lpl) {
+			System.out.print(value + " ");
+		}
+
+		// Get Iterable Positions and traverse over positions.
+		System.out.println("");
+		Iterable<Position<Integer>> positions = lpl.positions();
+		for (Position<Integer> position : positions) {
+			System.out.print(position.getElement() + " ");
 		}
 	}
 }

@@ -48,6 +48,10 @@ public class ComparatorExample {
 
 		Collections.sort(personList, new ReverseComparator<Person>(new AgeComparator()));
 		System.out.println(personList);
+		
+		AgeComparator ac = new AgeComparator();
+		int compare = ac.compare(p1, p2);
+		System.out.println(compare);
 	}
 
 }

@@ -96,7 +96,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	}
 
 	// accessor methods (not already implemented in
-	// AbstractBinaryTree)
+	// AbstractBinaryTree) O(1).
 	/** Returns the number of nodes in the tree. */
 	public int size() {
 		return size;
@@ -104,13 +104,13 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
 	/**
 	 * Returns the root Position of the tree (or null if tree is
-	 * empty).
+	 * empty). O(1)
 	 */
 	public Position<E> root() {
 		return root;
 	}
 
-	/** Returns the Position of p's parent (or null if p is root). */
+	/** Returns the Position of p's parent (or null if p is root). O(1) */
 	public Position<E> parent(Position<E> p) throws IllegalArgumentException {
 		Node<E> node = validate(p);
 		return node.getParent();
@@ -118,7 +118,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
 	/**
 	 * Returns the Position of p's left child (or null if no child
-	 * exists).
+	 * exists). O(1)
 	 */
 	public Position<E> left(Position<E> p) throws IllegalArgumentException {
 		Node<E> node = validate(p);
@@ -127,7 +127,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
 	/**
 	 * Returns the Position of p's right child (or null if no child
-	 * exists).
+	 * exists). O(1)
 	 */
 	public Position<E> right(Position<E> p) throws IllegalArgumentException {
 		Node<E> node = validate(p);
@@ -138,7 +138,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	/**
 	 * Places element e at the root of an empty tree and returns its
 	 * new Position. If the tree already contains nodes, throw
-	 * exceptions, else create the root node with element passed in.
+	 * exceptions, else create the root node with element passed in. O(1)
 	 */
 	public Position<E> addRoot(E e) throws IllegalStateException {
 		if (!isEmpty())
@@ -150,7 +150,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
 	/**
 	 * Creates a new left child of Position p storing element e;
-	 * returns its Position.
+	 * returns its Position. O(1)
 	 */
 	public Position<E> addLeft(Position<E> p, E e) throws IllegalArgumentException {
 		Node<E> parent = validate(p);
@@ -164,7 +164,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
 	/**
 	 * Creates a new right child of Position p storing element e;
-	 * returns its Position.
+	 * returns its Position. O(1)
 	 */
 	public Position<E> addRight(Position<E> p, E e) throws IllegalArgumentException {
 		Node<E> parent = validate(p);
@@ -178,7 +178,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
 	/**
 	 * Replaces the element at Position p with e and returns the
-	 * replaced element.
+	 * replaced element. O(1)
 	 */
 	public E set(Position<E> p, E e) throws IllegalArgumentException {
 		Node<E> node = validate(p);

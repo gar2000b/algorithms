@@ -32,7 +32,7 @@ public class ArrayList<E> implements List<E>, Iterable<E> {
 		@Override
 		public E next() {
 			if (j == size)
-				throw new NoSuchElementException("o next element");
+				throw new NoSuchElementException("No next element");
 			removable = true;
 			return data[j++];
 		}

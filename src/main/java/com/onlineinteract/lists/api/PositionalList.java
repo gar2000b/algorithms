@@ -1,6 +1,6 @@
 package com.onlineinteract.lists.api;
 
-/** An interface for positional lists. */
+/** An ADT (Abstract Data Type) interface for positional lists. */
 public interface PositionalList<E> {
 	/** Returns the number of elements in the list. */
 	int size();
@@ -61,4 +61,7 @@ public interface PositionalList<E> {
 	 * (invalidating p).
 	 */
 	E remove(Position<E> p) throws IllegalArgumentException;
+
+	/** Returns an iterable representation of the list's positions. */
+	Iterable<Position<E>> positions();
 }
