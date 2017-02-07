@@ -7,8 +7,8 @@ import com.onlineinteract.lists.api.Position;
 import com.onlineinteract.lists.api.PositionalList;
 import com.onlineinteract.priorityqueues.api.Entry;
 
-/** An implementation of a priority queue with an unsorted list. */
-public class UnsortedPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
+/** An implementation of a priority queue with a sorted list. */
+public class SortedPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 	/** primary collection of priority queue entries */
 	private PositionalList<Entry<K, V>> list = new LinkedPositionalList<>();
 
@@ -16,7 +16,7 @@ public class UnsortedPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 	 * Creates an empty priority queue based on the natural ordering
 	 * of its keys.
 	 */
-	public UnsortedPriorityQueue() {
+	public SortedPriorityQueue() {
 		super();
 	}
 
@@ -24,18 +24,8 @@ public class UnsortedPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 	 * Creates an empty priority queue using the given comparator to
 	 * order keys.
 	 */
-	public UnsortedPriorityQueue(Comparator<K> comp) {
+	public SortedPriorityQueue(Comparator<K> comp) {
 		super(comp);
-	}
-
-	/** Returns the Position of an entry having minimal key. */
-	private Position<Entry<K, V>> findMin() { // only called when
-												// nonempty
-		Position<Entry<K, V>> small = list.first();
-		for (Position<Entry<K, V>> walk : list.positions())
-			if (compare(walk.getElement(), small.getElement()) < 0)
-				small = walk; // found an even smaller key
-		return small;
 	}
 
 	/** Inserts a key-value pair and returns the entry created. */
@@ -43,7 +33,14 @@ public class UnsortedPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 		checkKey(key); // auxiliary key-checking method (could throw
 						// exception)
 		Entry<K, V> newest = new PQEntry<>(key, value);
-		list.addLast(newest);
+		Position<Entry<K, V>> walk = list.last();
+		// walk backward, looking for smaller key
+		while (walk != null && compare(newest, walk.getElement()) < 0)
+			walk = list.before(walk);
+		if (walk == null)
+			list.addFirst(newest); // new key is smallest
+		else
+			list.addAfter(walk, newest); // newest goes after walk
 		return newest;
 	}
 
@@ -51,30 +48,18 @@ public class UnsortedPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
 	public Entry<K, V> min() {
 		if (list.isEmpty())
 			return null;
-		return findMin().getElement();
+		return list.first().getElement();
 	}
 
 	/** Removes and returns an entry with minimal key. */
 	public Entry<K, V> removeMin() {
 		if (list.isEmpty())
 			return null;
-		return list.remove(findMin());
+		return list.remove(list.first());
 	}
 
 	/** Returns the number of items in the priority queue. */
 	public int size() {
 		return list.size();
-	}
-	
-	public static void main(String[] args) {
-		UnsortedPriorityQueue<String, String> upq = new UnsortedPriorityQueue<>();
-		
-		upq.insert("Gary", "37 year old Software Engineer, flying to Gibralta");
-		upq.insert("Derek", "35 year old Model Maker flying to Canada");
-		upq.insert("Elaine", "32 year old Accountant flying to USA");
-		
-		// Print out min entry
-		Entry<String, String> min = upq.min();
-		System.out.println(min.getKey() + " " + min.getValue());
 	}
 }

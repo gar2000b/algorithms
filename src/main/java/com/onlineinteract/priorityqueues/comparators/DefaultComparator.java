@@ -1,4 +1,4 @@
-package com.onlineinteract.priorityqueues;
+package com.onlineinteract.priorityqueues.comparators;
 
 import java.util.Comparator;
 

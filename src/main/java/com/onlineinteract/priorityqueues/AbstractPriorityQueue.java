@@ -4,6 +4,7 @@ import java.util.Comparator;
 
 import com.onlineinteract.priorityqueues.api.Entry;
 import com.onlineinteract.priorityqueues.api.PriorityQueue;
+import com.onlineinteract.priorityqueues.comparators.DefaultComparator;
 
 /**
  * An abstract base class to assist implementations of the
