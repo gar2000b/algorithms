@@ -14,7 +14,7 @@ package com.onlineinteract.sorting;
  * the length of sub-array is less than 1, therefore return as by that
  * point, single or no element sub-arrays do not require sorting.
  * 
- * Time Complexity = O(n^2).
+ * Time Complexity = O(n^2) worst case. Average = O(n log n).
  * 
  * @author Gary Black / Digilogue
  *
