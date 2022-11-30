@@ -2,7 +2,7 @@ package com.onlineinteract.recursion;
 
 /**
  * Binary Search algorithm. Searches for target value within an already sorted
- * set of data. Time Complexity: O(logb n)
+ * set of data. Time Complexity: O(log n)
  * 
  * @author Gary Black / Digilogue
  *
